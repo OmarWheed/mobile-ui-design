@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    kotlin("plugin.serialization") version "2.4.21"
 }
 
 android {
@@ -57,6 +58,6 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     //splash
     implementation("androidx.core:core-splashscreen:1.0.0")
-
-
+    //kotlinx serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
 }

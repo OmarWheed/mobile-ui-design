@@ -15,6 +15,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.ui.mobile.feature.auth.AuthView
 import com.ui.mobile.feature.auth.VerificationView
 import com.ui.mobile.feature.onboarding.OnBoardingView
+import com.ui.mobile.feature.shop.ShopView
 import com.ui.mobile.ui.theme.MobileUiDesignTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,10 +27,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MobileUiDesignTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                   // OnBoardingView(modifier = Modifier.padding(innerPadding))
-                    VerificationView( Modifier.padding(innerPadding))
-                }
+                ShopView()
             }
         }
     }
