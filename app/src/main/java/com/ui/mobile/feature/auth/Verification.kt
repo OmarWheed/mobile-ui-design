@@ -1,5 +1,5 @@
-
 package com.ui.mobile.feature.auth
+
 import android.widget.Space
 import androidx.annotation.RestrictTo
 import androidx.compose.foundation.Image
@@ -31,10 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,16 +39,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ui.mobile.R
-import kotlinx.coroutines.launch
-import java.time.temporal.TemporalAdjusters.next
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VerificationView(modifier: Modifier){
+fun VerificationView(modifier: Modifier) {
     val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = { 2 }
@@ -59,24 +53,28 @@ fun VerificationView(modifier: Modifier){
     Scaffold(
         topBar = {
             TopAppBar(
-                title ={}
-            ,
+                title = {},
                 navigationIcon = {
-                    Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "back",
-                        tint =Color.Black,
-                        )
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                        contentDescription = "back",
+                        tint = Color.Black,
+                    )
                 }
             )
         },
         floatingActionButton = {
 
-            Row (
+            Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
 
-                verticalAlignment = Alignment.CenterVertically
-                , modifier = Modifier.fillMaxWidth()
-            ){
-            if(pagerState.currentPage==1)Text("Resend Code", color = Color(0xFF53B175), modifier = Modifier.padding(start = 24.dp))
+                verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()
+            ) {
+                if (pagerState.currentPage == 1) Text(
+                    "Resend Code",
+                    color = Color(0xFF53B175),
+                    modifier = Modifier.padding(start = 24.dp)
+                )
                 FloatingActionButton(
                     onClick = {
 
@@ -99,7 +97,7 @@ fun VerificationView(modifier: Modifier){
 
     ) { padding ->
 
-        HorizontalPager (
+        HorizontalPager(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
@@ -108,9 +106,9 @@ fun VerificationView(modifier: Modifier){
 
         ) {
 
-            page ->
-            when(page){
-                0->VerificationStepView()
+                page ->
+            when (page) {
+                0 -> VerificationStepView()
                 1 -> CodeStepView()
             }
 
@@ -119,27 +117,46 @@ fun VerificationView(modifier: Modifier){
 }
 
 
-
-
-
 @Composable
 fun VerificationStepView(
 
-){
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 25.dp, vertical = 15.dp))
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 25.dp, vertical = 15.dp)
+    )
     {
-        Column (
+        Column(
             verticalArrangement = Arrangement.Top
-        ){
-            Text("Enter your mobile number", style = TextStyle(fontSize = 26.sp, fontWeight = FontWeight.SemiBold, color = Color.Black))
-            Spacer(modifier=Modifier.height(27.dp))
-            Text("Mobile Number", style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF7C7C7C)))
-            Spacer(modifier=Modifier.height(10.dp))
+        ) {
+            Text(
+                "Enter your mobile number",
+                style = TextStyle(
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black
+                )
+            )
+            Spacer(modifier = Modifier.height(27.dp))
+            Text(
+                "Mobile Number",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFF7C7C7C)
+                )
+            )
+            Spacer(modifier = Modifier.height(10.dp))
             OutlinedTextField(
 
-                prefix = {Image(painter= painterResource(R.drawable.flag), contentDescription = null, modifier = Modifier.size(24.dp))},
+                prefix = {
+                    Image(
+                        painter = painterResource(R.drawable.flag),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                },
                 modifier = Modifier.fillMaxWidth(),
                 value = "+888",
                 onValueChange = {
@@ -158,24 +175,40 @@ fun VerificationStepView(
 @Composable
 fun CodeStepView(
 
-){
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 25.dp, vertical = 15.dp))
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 25.dp, vertical = 15.dp)
+    )
     {
-        Column (
+        Column(
             verticalArrangement = Arrangement.Top
-        ){
-            Text("Enter your 4-digit code", style = TextStyle(fontSize = 26.sp, fontWeight = FontWeight.SemiBold, color = Color.Black))
-            Spacer(modifier=Modifier.height(27.dp))
-            Text("Code", style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF7C7C7C)))
-            Spacer(modifier=Modifier.height(10.dp))
+        ) {
+            Text(
+                "Enter your 4-digit code",
+                style = TextStyle(
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black
+                )
+            )
+            Spacer(modifier = Modifier.height(27.dp))
+            Text(
+                "Code",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFF7C7C7C)
+                )
+            )
+            Spacer(modifier = Modifier.height(10.dp))
             OutlinedTextField(
 
 
                 modifier = Modifier.fillMaxWidth(),
                 value = "",
-                placeholder = {Text("---")},
+                placeholder = { Text("---") },
                 onValueChange = {
 
                 },

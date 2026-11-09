@@ -81,7 +81,7 @@ fun ShopView() {
         ) {
             AddressHeader()
             Spacer(modifier = Modifier.height(12.dp))
-            SearchFiled()
+            SearchFiled(modifier = Modifier.fillMaxWidth())
             BannerSection()
             HeaderSectionTitle(
                 title = "Exclusive Offer"
@@ -249,11 +249,11 @@ fun BannerSection() {
 }
 
 @Composable
-fun SearchFiled() {
+fun SearchFiled(    modifier: Modifier = Modifier) {
     var value by remember { mutableStateOf("") }
 
     TextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(15.dp),
 
         prefix = {
