@@ -3,11 +3,13 @@ package com.ui.mobile.feature.explore
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -16,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,117 +40,87 @@ data class CategoryType(
     val color: Color
 )
 
-
 val listOfCategoryType = listOf(
-    CategoryType(
-        title = "Frash Fruits & Vegetable",
-        image = R.drawable.fruits,
-        color = Color(0xFF53B175).copy(alpha = 0.7f)
-    ),
-    CategoryType(
-        title = "Cooking Oil& Ghee",
-        image = R.drawable.oil,
-        color = Color(0xFFF8A44C).copy(alpha = 0.7f)
-    ),
-    CategoryType(
-        title = "Meat & Fish",
-        image = R.drawable.fish,
-        color = Color(0xFFF7A593).copy(alpha = 0.7f)
-    ),
-    CategoryType(
-        title = "Bakery & Snacks",
-        image = R.drawable.backery,
-        color = Color(0xFFD3B0E0).copy(alpha = 0.7f)
-    ),
-    CategoryType(
-        title = "Dairy & Eggs",
-        image = R.drawable.eges,
-        color = Color(0xFFFDE598).copy(alpha = 0.7f)
-    ),
-    CategoryType(
-        title = "Beverages",
-        image = R.drawable.beverages,
-        color = Color(0xFFB7DFF5).copy(alpha = 0.7f)
-    )
+    CategoryType("Fresh Fruits & Vegetable", R.drawable.fruits, Color(0xFF53B175)),
+    CategoryType("Cooking Oil & Ghee", R.drawable.oil, Color(0xFFF8A44C)),
+    CategoryType("Meat & Fish", R.drawable.fish, Color(0xFFF7A593)),
+    CategoryType("Bakery & Snacks", R.drawable.backery, Color(0xFFD3B0E0)),
+    CategoryType("Dairy & Eggs", R.drawable.eges, Color(0xFFFDE598)),
+    CategoryType("Beverages", R.drawable.beverages, Color(0xFFB7DFF5))
 )
 
 @Composable
 fun CategoryCard(
-    title: String,
-    image: Int,
-    color: Color
+    category: CategoryType,
+    onClick: () -> Unit = {}
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .background(color = color.copy(alpha = 0.2f), shape = RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(18.dp))
+            .background(color = category.color.copy(alpha = 0.1f))
             .border(
-                color = color,
-                shape = RoundedCornerShape(12.dp),
-                width = 2.dp
+                color = category.color.copy(alpha = 0.7f),
+                shape = RoundedCornerShape(18.dp),
+                width = 1.dp
             )
-            .aspectRatio(0.9f)
-
+            .clickable { onClick() }
+            .aspectRatio(1f)
+            .padding(16.dp)
     ) {
         Image(
-            painter = painterResource(image), contentDescription = null,
-
-            modifier = Modifier
-
-                .padding(horizontal = 32.dp, vertical = 21.dp)
-                .size(height = 74.dp, width = 111.dp)
-
+            painter = painterResource(category.image),
+            contentDescription = null,
+            modifier = Modifier.size(80.dp)
         )
         Text(
-            title, textAlign = TextAlign.Center,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp
+            text = category.title,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            fontSize = 15.sp,
+            lineHeight = 20.sp,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(top = 10.dp)
         )
     }
 }
 
+private fun Modifier.clip(shape: RoundedCornerShape): Modifier = this.then(Modifier.background(Color.Transparent, shape))
+
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable()
+@Preview(showBackground = true)
+@Composable
 fun ExploreView() {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Find Products", fontWeight = FontWeight.Bold, fontSize = 18.sp) }
+                title = { 
+                    Text(
+                        text = "Find Products", 
+                        fontWeight = FontWeight.Bold, 
+                        fontSize = 20.sp
+                    ) 
+                }
             )
         }
     ) { innerPadding ->
-
-
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
             contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            columns = GridCells.Adaptive(minSize = 115.dp),
-
-            ) {
-
-            item(
-                span = { GridItemSpan(maxLineSpan) }
-            ) {
-                SearchFiled(
-
-                )
+            horizontalArrangement = Arrangement.spacedBy(15.dp),
+            verticalArrangement = Arrangement.spacedBy(15.dp),
+            columns = GridCells.Fixed(2)
+        ) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                SearchFiled(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp))
             }
 
-            items(listOfCategoryType.size) { item ->
-                CategoryCard(
-                    title = listOfCategoryType[item].title,
-                    image = listOfCategoryType[item].image,
-                    color = listOfCategoryType[item].color,
-                )
-
+            items(listOfCategoryType.size) { index ->
+                CategoryCard(category = listOfCategoryType[index])
             }
-
         }
-
     }
 }

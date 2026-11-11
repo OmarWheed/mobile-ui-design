@@ -1,6 +1,5 @@
 package com.ui.mobile.feature.cart
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,24 +9,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,96 +41,143 @@ import androidx.compose.ui.unit.sp
 import com.ui.mobile.R
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CartView() {
     Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("My Cart", fontWeight = FontWeight.Bold, fontSize = 20.sp) }
+            )
+        },
         bottomBar = {
             Box(
-
-
-                contentAlignment = Alignment.Center, modifier = Modifier
+                modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 12.dp)
-                    .background(Color(0xff53B175), shape = RoundedCornerShape(19.dp))
-
-
+                    .padding(16.dp)
+                    .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(18.dp))
+                    .padding(vertical = 16.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Text(
-                    "Add All To Cart",
-                    modifier = Modifier.padding(
-                        15.dp
-                    ),
-                    style = TextStyle(
-                        fontSize = 18.sp, color = Color.White,
-
-
-                        )
-                )
-
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Go to Checkout",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
             }
-        },
-        topBar = { CenterAlignedTopAppBar(title = { Text("My Favourite") }) }
+        }
     ) { innerPadding ->
         LazyColumn(
-            contentPadding = PaddingValues(12.dp),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding),
+            contentPadding = PaddingValues(16.dp)
         ) {
-            items(10) {
-                FavouriteItem()
+            items(5) {
+                CartItem()
                 HorizontalDivider(
                     modifier = Modifier.padding(vertical = 16.dp),
-                    thickness = 1.dp,
-                    color = Color.LightGray
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                 )
-            }
-            item {
-
             }
         }
     }
-
 }
 
-@Preview
 @Composable
-fun FavouriteItem() {
+fun CartItem() {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 80.dp),
+        modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(R.drawable.fish),
             contentDescription = null,
             modifier = Modifier.size(80.dp)
-            //  modifier = Modifier.aspectRatio()
         )
-        Spacer(modifier = Modifier.width(37.dp))
-        Column() {
+        Spacer(modifier = Modifier.width(20.dp))
+        Column(modifier = Modifier.weight(1f)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Bell Pepper Red", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                Row (verticalAlignment = Alignment.CenterVertically){
-                    Text("$412.1")
-
-                    Icon(
-                        Icons.Filled.KeyboardArrowRight,
-                        contentDescription = null,
-                    )
-                }
+                Text(
+                    text = "Bell Pepper Red",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Remove",
+                    tint = Color.Gray,
+                    modifier = Modifier.size(20.dp)
+                )
             }
-            Text("1kg, Price")
-
+            Text(
+                text = "1kg, Price",
+                fontSize = 14.sp,
+                color = Color.Gray
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    QuantityButton(icon = Icons.Default.Remove)
+                    Text(
+                        text = "1",
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    QuantityButton(icon = Icons.Default.Add, isPrimary = true)
+                }
+                Text(
+                    text = "$4.99",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
     }
 }
 
+@Composable
+fun QuantityButton(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    isPrimary: Boolean = false
+) {
+    Box(
+        modifier = Modifier
+            .size(36.dp)
+            .border(
+                width = 1.dp,
+                color = if (isPrimary) Color.Transparent else MaterialTheme.colorScheme.outline,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .background(
+                color = if (isPrimary) Color.Transparent else Color.Transparent,
+                shape = RoundedCornerShape(12.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = if (isPrimary) MaterialTheme.colorScheme.primary else Color.Gray,
+            modifier = Modifier.size(20.dp)
+        )
+    }
+}

@@ -2,6 +2,7 @@ package com.ui.mobile.feature.account
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -18,6 +21,7 @@ import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,30 +34,47 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ui.mobile.R
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun AccountView() {
-
     LazyColumn(
-        Modifier
+        modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         item {
             AccountHeader()
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(10.dp))
         }
-        items(8) {
-            HorizontalDivider()
-            ServiceItem()
-            HorizontalDivider()
+
+        // List of menu items to optimize code repetition
+        val menuItems = listOf(
+            "Orders" to R.drawable.store,
+            "My Details" to R.drawable.accout,
+            "Delivery Address" to R.drawable.explore,
+            "Payment Methods" to R.drawable.cart,
+            "Promo Card" to R.drawable.favourite,
+            "Notifications" to R.drawable.explore,
+            "Help" to R.drawable.explore,
+            "About" to R.drawable.explore
+        )
+
+        items(menuItems.size) { index ->
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+            )
+            ServiceItem(title = menuItems[index].first, iconRes = menuItems[index].second)
         }
 
         item {
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+            )
             LogoutButton()
         }
     }
-
 }
 
 @Composable
@@ -62,61 +83,87 @@ fun LogoutButton() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(24.dp)
-            .background(Color(0xffF2F3F2), shape = RoundedCornerShape(12.dp))
-            .padding(vertical = 24.dp, horizontal = 24.dp),
+            .background(
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                shape = RoundedCornerShape(12.dp)
+            )
+            .clickable { /* Handle Logout */ }
+            .padding(vertical = 18.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start
+        horizontalArrangement = Arrangement.Center // Better than using weights
     ) {
-        Icon(Icons.Default.ExitToApp, contentDescription = null, tint = Color(0xFF53B175))
-        Spacer(
-            modifier = Modifier.weight(1f)
+        Icon(
+            imageVector = Icons.Default.ExitToApp,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary
         )
-        Text("Log Out", fontSize = 18.sp, color = Color(0xFF53B175))
-        Spacer(
-            modifier = Modifier.weight(1f)
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = "Log Out",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.primary
         )
-
     }
 }
 
 @Composable
-fun ServiceItem() {
-
+fun ServiceItem(title: String, iconRes: Int) {
     ListItem(
+        modifier = Modifier.clickable { },
         leadingContent = {
-
-            Image(
-                painter = painterResource(R.drawable.store), contentDescription = null
-
+            Icon(
+                painter = painterResource(iconRes),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
         },
         headlineContent = {
-            Text("Omar Waheed", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text(
+                text = title,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 18.sp
+            )
         },
         trailingContent = {
-            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null
+            )
         }
-
     )
 }
 
 @Composable
 fun AccountHeader() {
     ListItem(
-        supportingContent = { Text("Omardev@gmail.com") },
+        modifier = Modifier.padding(vertical = 10.dp),
+        supportingContent = { 
+            Text("omardev@gmail.com", color = MaterialTheme.colorScheme.onSurfaceVariant) 
+        },
         leadingContent = {
-
             Image(
-                painter = painterResource(R.drawable.backery), contentDescription = null
-
+                painter = painterResource(R.drawable.backery),
+                contentDescription = "Profile Picture",
+                modifier = Modifier.size(64.dp)
             )
         },
         headlineContent = {
-            Text("Omar Waheed", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-        },
-        trailingContent = {
-            Icon(Icons.Default.Edit, contentDescription = null)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "Omar Waheed", 
+                    fontWeight = FontWeight.Bold, 
+                    fontSize = 20.sp
+                )
+                Spacer(Modifier.width(8.dp))
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
         }
-
     )
 }
